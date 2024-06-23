@@ -15,7 +15,7 @@ func GetAuthors(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("SELECT * FROM authors")
 		if err != nil {
-			log.Fatal(err)
+			json.NewEncoder(w).Encode(err)
 		}
 		defer rows.Close()
 
@@ -23,7 +23,7 @@ func GetAuthors(db *sql.DB) http.HandlerFunc {
 		for rows.Next() {
 			var a types.Author
 			if err := rows.Scan(&a.ID, &a.Name, &a.Surname, &a.Biography, &a.Birthday); err != nil {
-				log.Fatal(err)
+				json.NewEncoder(w).Encode(err)
 			}
 			authors = append(authors, a)
 		}
@@ -80,14 +80,14 @@ func UpdateAuthor(db *sql.DB) http.HandlerFunc {
 		// Execute the update query
 		_, err := db.Exec("UPDATE authors SET name = $1, surname = $2,biography=$3, birthday = $4  WHERE id = $5", a.Name, a.Surname, a.Biography, a.Birthday, id)
 		if err != nil {
-			log.Fatal(err)
+			json.NewEncoder(w).Encode(err)
 		}
 
 		// Retrieve the updated user data from the database
 		var updatedAuthor types.Author
 		err = db.QueryRow("SELECT * FROM authors WHERE id = $1", id).Scan(&updatedAuthor.ID, &updatedAuthor.Name, &updatedAuthor.Surname, &updatedAuthor.Biography, &updatedAuthor.Birthday)
 		if err != nil {
-			log.Fatal(err)
+			json.NewEncoder(w).Encode(err)
 		}
 
 		// Send the updated user data in the response
@@ -105,13 +105,10 @@ func DeleteAuthor(db *sql.DB) http.HandlerFunc {
 		err := db.QueryRow("SELECT * FROM authors WHERE id = $1", id).Scan(&a.ID, &a.Name, &a.Surname, &a.Biography, &a.Birthday)
 		if err != nil {
 			json.NewEncoder(w).Encode("Автор не обнаружен")
-			//w.WriteHeader(http.StatusNotFound)
-			//return
 		} else {
 			_, err := db.Exec("DELETE FROM users WHERE id = $1", id)
 			if err != nil {
-				//todo : fix error handling
-				w.WriteHeader(http.StatusNotFound)
+				json.NewEncoder(w).Encode(err)
 				return
 			}
 

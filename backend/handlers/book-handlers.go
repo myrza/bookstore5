@@ -49,7 +49,6 @@ func GetBook(db *sql.DB) http.HandlerFunc {
 			//json.NewEncoder(w).Encode("Ошибка при попытке получить книгу по указанному идентификатору")
 			json.NewEncoder(w).Encode("Ошибка при попытке получить книгу по указанному идентификатору")
 			log.Println(err)
-			//return
 		} else {
 			json.NewEncoder(w).Encode(b)
 		}
@@ -88,14 +87,13 @@ func UpdateBook(db *sql.DB) http.HandlerFunc {
 		_, err := db.Exec("UPDATE books SET title = $1, authorid = $2, isbn=$3, year = $4  WHERE id = $5", b.Title, b.AuthorID, b.ISBN, b.Year, id)
 		if err != nil {
 			json.NewEncoder(w).Encode("Автор не обнаружен")
-			//log.Fatal(err)
 		}
 
 		// Retrieve the updated user data from the database
 		var updatedBook types.Book
 		err = db.QueryRow("SELECT * FROM books WHERE id = $1", id).Scan(&updatedBook.ID, &updatedBook.Title, &updatedBook.AuthorID, &updatedBook.ISBN, &updatedBook.Year)
 		if err != nil {
-			log.Fatal(err)
+			json.NewEncoder(w).Encode(err)
 		}
 
 		// Send the updated user data in the response
@@ -117,8 +115,7 @@ func DeleteBook(db *sql.DB) http.HandlerFunc {
 		} else {
 			_, err := db.Exec("DELETE FROM books WHERE id = $1", id)
 			if err != nil {
-				//todo : fix error handling
-				w.WriteHeader(http.StatusNotFound)
+				json.NewEncoder(w).Encode(err)
 				return
 			}
 
