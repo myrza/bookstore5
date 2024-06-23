@@ -4,7 +4,12 @@
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+1. Клонировать https://github.com/myrza/bookstore5
+2. Запустить Docker
+3. Сформировать 2 контейнера командой make docker-run
+4. Проверить работу контейтеров командой docker ps -a
+5. Начать работу. Рекомендуемое приложение Postman
+6. Запустить тесты из Кейсов тестирования (ниже)
 
 ## MakeFile
 
@@ -61,7 +66,10 @@ make docker-down
 
 7. Вывод информацию по всем авторам
     GET localhost:8000/api/go/authors
-    
+
+8. Негативный сценарий 
+    GET localhost:8000/api/go/authors/777
+
 -----------------------------------------
 Книги:
 1. Создание первой книги автора 1 (Гессе)
@@ -102,9 +110,12 @@ make docker-down
     }
 6. Удаление книги 2 
     DELETE localhost:8000/api/go/books/1
+
 7. Вывод информации по всем книгам
     GET localhost:8000/api/go/books
 
+8. Негативный сценарий 
+    GET localhost:8000/api/go/books/777
 ------------------------------------------
 Транзакции:
 1. Обновление информации по первой книге автора 1
