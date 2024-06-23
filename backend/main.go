@@ -32,11 +32,6 @@ func main() {
 	log.SetOutput(flog)
 
 	// create table if not exists
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name TEXT, email TEXT)")
-	if err != nil {
-		log.Fatal(err)
-	}
-	// create table if not exists
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS authors (id SERIAL PRIMARY KEY, name TEXT, surname TEXT, biography TEXT, birthday DATE)")
 	if err != nil {
 		log.Fatal(err)
@@ -73,34 +68,3 @@ func main() {
 	// start server
 	log.Fatal(http.ListenAndServe(":8000", enhancedRouter))
 }
-
-/*
-
-func enableCORS(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Set CORS headers
-		w.Header().Set("Access-Control-Allow-Origin", "*") // Allow any origin
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-		// Check if the request is for CORS preflight
-		if r.Method == "OPTIONS" {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-
-		// Pass down the request to the next middleware (or final handler)
-		next.ServeHTTP(w, r)
-	})
-
-}
-
-func jsonContentTypeMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Set JSON Content-Type
-		w.Header().Set("Content-Type", "application/json")
-		next.ServeHTTP(w, r)
-	})
-}
-
-*/
