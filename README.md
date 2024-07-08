@@ -133,4 +133,17 @@ make docker-down
 }
 2. Вывод информации по первой книге автора 1
     PUT localhost:8000/api/go/book-author/1
+3. Негативный сценарий. Неправильный формат даты 
+    PUT localhost:8000/api/go/book-author/1
+    JSON: 
+    {
+    "author_id": 1,
+    "name": "Герман-Германович",
+    "surname": "Гессе",
+    "biography": "No bio",
+    "birthday": "01.01.2020",
+    "title": "Степной волк укусит за бок",
+    "isbn": "isbn",
+    "year": "1927"
+}
 
