@@ -1,6 +1,6 @@
 FROM golang:1.16.3-alpine3.13
 
-WORKDIR /app
+WORKDIR /api
 
 COPY . .
 
@@ -8,7 +8,8 @@ COPY . .
 RUN go get -d -v ./...
 
 # Build the go app
-RUN go build -o api .
+RUN go build -o api cmd/goapp/main.go 
+
 
 EXPOSE 8000
 

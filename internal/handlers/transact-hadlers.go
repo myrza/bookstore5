@@ -1,12 +1,13 @@
 package handlers
 
 import (
-	"api/types"
 	"context"
 	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/myrza/bookstore8/internal/types"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"

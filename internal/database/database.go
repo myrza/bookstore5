@@ -1,46 +1,43 @@
-package main
+package server
 
 import (
-	"api/handlers"
 	"database/sql"
+	"fmt"
+
+	//"fmt"
 	"log"
 	"net/http"
-	"os"
+
+	"github.com/myrza/bookstore8/internal/handlers"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	//"github.com/myrza/bookstore5/backend/handlers"
 )
 
-// main function
-func main() {
-	//connect to database
-	//db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
-	db, err := sql.Open("postgres", "postgres://postgres:postgres@db:5432/postgres?sslmode=disable")
+func DatabaseConnect() error {
+	envFile, _ := godotenv.Read(".env")
+
+	database := envFile["DB_DATABASE"]
+	password := envFile["DB_PASSWORD"]
+	username := envFile["DB_USERNAME"]
+	port := envFile["DB_PORT"]
+	host := envFile["DB_HOST"]
+
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, database)
+
+	db, err := sql.Open("postgres", connStr)
+
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer db.Close()
 
-	// логируем в файл
-	flog, err := os.OpenFile("logfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("error opening file: %v", err)
-	}
-	defer flog.Close()
-
-	log.SetOutput(flog)
-
 	// create table if not exists
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS authors (id SERIAL PRIMARY KEY, name TEXT, surname TEXT, biography TEXT, birthday DATE)")
+	err = TableCreate(db)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS books (id SERIAL PRIMARY KEY, title TEXT, authorid INTEGER, isbn TEXT, year INTEGER)")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	// create router
 	router := mux.NewRouter()
 
@@ -67,4 +64,6 @@ func main() {
 
 	// start server
 	log.Fatal(http.ListenAndServe(":8000", enhancedRouter))
+	return nil
+
 }

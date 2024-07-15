@@ -20,8 +20,8 @@ docker-run:
 
 
 # Shutdown DB container
-docker-down:d
-	ocker-compose down
+docker-down:
+	docker-compose down
 
 # Clean the binary
 clean:
