@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/myrza/bookstore8/internal/handlers"
+	"github.com/myrza/bookstore5/internal/handlers"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"

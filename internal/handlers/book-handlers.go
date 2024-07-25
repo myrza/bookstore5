@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/myrza/bookstore8/internal/types"
+	"github.com/myrza/bookstore5/internal/types"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"

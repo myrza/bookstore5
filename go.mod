@@ -1,4 +1,4 @@
-module github.com/myrza/bookstore8
+module github.com/myrza/bookstore5
 
 go 1.20
 

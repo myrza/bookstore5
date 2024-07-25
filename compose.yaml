@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: go.dockerfile
     environment:
-      DATABASE_URL: 'postgres://${DB_DATABASE}:${DB_PASSWORDD}@db:5432/${DB_DATABASE}?sslmode=disable'  
+      DATABASE_URL: 'postgres://${DB_DATABASE}:${DB_PASSWORD}@db:5432/${DB_DATABASE}?sslmode=disable'  
     ports:
       - '8000:8000'
     depends_on:

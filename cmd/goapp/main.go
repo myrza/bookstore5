@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	server "github.com/myrza/bookstore8/internal/database"
+	server "github.com/myrza/bookstore5/internal/database"
 )
 
 // main function
