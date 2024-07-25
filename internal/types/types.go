@@ -26,3 +26,7 @@ type AuthorAndBook struct {
 	ISBN      string `json:"isbn"`
 	Year      string `json:"year"`
 }
+
+type ReturnMessage struct {
+	Message string `json:"Message"`
+}
