@@ -12,8 +12,30 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func (s *service) GetAuthors() interface{} {
+	rows, err := s.db.Query("SELECT * FROM authors")
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	authors := []types.Author{}
+	for rows.Next() {
+		var a types.Author
+		if err := rows.Scan(&a.ID, &a.Name, &a.Surname, &a.Biography, &a.Birthday); err != nil {
+
+			return err
+		}
+		authors = append(authors, a)
+	}
+	if err := rows.Err(); err != nil {
+		return err
+	}
+
+	return authors
+}
+
 func (s *service) CreateAuthor(r *http.Request) interface{} {
-	//m := types.ReturnMessage{}
 
 	var a types.Author
 	json.NewDecoder(r.Body).Decode(&a)
@@ -23,11 +45,11 @@ func (s *service) CreateAuthor(r *http.Request) interface{} {
 		return err
 	}
 
-	//m.Message = "Автор успешно создан. Новый идентификатор"
 	return a
 }
+
 func (s *service) GetAuthor(r *http.Request) interface{} {
-	//m := types.ReturnMessage{}
+
 	vars := mux.Vars(r)
 	id := vars["id"]
 
@@ -54,28 +76,7 @@ func (s *service) UpdateAuthor(r *http.Request) interface{} {
 
 	return a
 }
-func (s *service) GetAuthors() interface{} {
-	rows, err := s.db.Query("SELECT * FROM authors")
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
 
-	authors := []types.Author{}
-	for rows.Next() {
-		var a types.Author
-		if err := rows.Scan(&a.ID, &a.Name, &a.Surname, &a.Biography, &a.Birthday); err != nil {
-
-			return err
-		}
-		authors = append(authors, a)
-	}
-	if err := rows.Err(); err != nil {
-		return err
-	}
-
-	return authors
-}
 func (s *service) DeleteAuthor(r *http.Request) interface{} {
 	m := types.ReturnMessage{}
 
