@@ -15,6 +15,7 @@ func (s *Server) getAuthors(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(jsonResp)
 }
+
 func (s *Server) createAuthor(w http.ResponseWriter, r *http.Request) {
 	jsonResp, err := json.Marshal(s.db.CreateAuthor(r))
 
@@ -24,6 +25,7 @@ func (s *Server) createAuthor(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(jsonResp)
 }
+
 func (s *Server) getAuthor(w http.ResponseWriter, r *http.Request) {
 	jsonResp, err := json.Marshal(s.db.GetAuthor(r))
 
@@ -33,6 +35,7 @@ func (s *Server) getAuthor(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(jsonResp)
 }
+
 func (s *Server) updateAuthor(w http.ResponseWriter, r *http.Request) {
 	jsonResp, err := json.Marshal(s.db.UpdateAuthor(r))
 
